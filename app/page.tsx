@@ -13,6 +13,7 @@ import { ContentGrowth } from '@/components/sections/content-growth'
 import { HonorsSection } from '@/components/sections/honors-section'
 import { CompetitiveSummary } from '@/components/sections/competitive-summary'
 import { ContactSection } from '@/components/sections/contact-section'
+import { EndingVideoSection } from '@/components/sections/ending-video-section'
 
 export default function Home() {
   // Initialize smooth scroll
@@ -62,6 +63,7 @@ export default function Home() {
       <HonorsSection />
       <CompetitiveSummary />
       <ContactSection />
+      <EndingVideoSection />
     </main>
   )
 }
