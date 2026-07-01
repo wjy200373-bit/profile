@@ -35,13 +35,12 @@ export const viewport: Viewport = {
 
 const themeInitScript = `
   try {
-    var storedTheme = window.localStorage.getItem('portfolio-theme');
-    var theme = storedTheme === 'mono' ? 'mono' : 'forest';
+    var theme = 'video';
     var root = document.documentElement;
-    root.classList.remove('theme-glass', 'theme-noir', 'theme-mono');
+    root.classList.remove('theme-glass', 'theme-noir', 'theme-mono', 'theme-video');
     root.dataset.portfolioTheme = theme;
     window.localStorage.setItem('portfolio-theme', theme);
-    if (theme === 'mono') root.classList.add('theme-mono');
+    root.classList.add('theme-video');
   } catch (error) {}
 `
 
@@ -51,7 +50,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="zh-CN" suppressHydrationWarning className={`${inter.variable} ${spaceGrotesk.variable} bg-background`}>
+    <html lang="zh-CN" suppressHydrationWarning className={`${inter.variable} ${spaceGrotesk.variable} theme-video bg-background`}>
       <body className="font-sans antialiased overflow-x-hidden">
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         {children}

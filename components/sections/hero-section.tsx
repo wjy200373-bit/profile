@@ -1,5 +1,6 @@
 'use client'
 
+import { useRef } from 'react'
 import { motion } from 'framer-motion'
 import { AnimatedCharacters, FadeIn } from '../animations'
 
@@ -20,9 +21,61 @@ const fitPoints = [
 ]
 
 export function HeroSection() {
+  const openingAmbientRef = useRef<HTMLVideoElement>(null)
+  const openingVideoRef = useRef<HTMLVideoElement>(null)
+
+  const startOpeningVideo = (video: HTMLVideoElement | null) => {
+    if (!video) return
+
+    if (Number.isFinite(video.duration)) {
+      video.currentTime = Math.min(0.8, Math.max(0, video.duration - 0.2))
+    }
+    video.play().catch(() => {})
+  }
+
   return (
     <section id="positioning" className="relative min-h-screen flex items-center overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-card" />
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-30 bg-black"
+        initial={{
+          clipPath: 'polygon(88% 0%, 92% 0%, 95% 24%, 90% 24%)',
+          opacity: 0,
+        }}
+        animate={{
+          clipPath: [
+            'polygon(88% 0%, 92% 0%, 95% 24%, 90% 24%)',
+            'polygon(72% 0%, 100% 0%, 100% 54%, 68% 68%)',
+            'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+            'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+            'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+          ],
+          opacity: [0, 1, 1, 1, 0],
+        }}
+        transition={{ duration: 2.8, times: [0, 0.14, 0.38, 0.78, 1], ease: [0.215, 0.61, 0.355, 1] }}
+      >
+        <video
+          ref={openingAmbientRef}
+          className="h-full w-full object-cover"
+          src="videos/opening.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          onLoadedMetadata={() => startOpeningVideo(openingAmbientRef.current)}
+          aria-hidden="true"
+        />
+        <div className="absolute inset-0 bg-black/10" />
+      </motion.div>
+      <motion.div
+        className="pointer-events-none absolute right-[13%] top-0 z-40 h-[62vh] w-px origin-top bg-white/90 shadow-[0_0_42px_rgba(255,255,255,0.82)]"
+        initial={{ opacity: 0, scaleY: 0.18, y: -20 }}
+        animate={{ opacity: [0, 1, 1, 0], scaleY: [0.18, 1.25, 1.62, 1.7], y: [-20, 24, 96, 150] }}
+        transition={{ duration: 2.35, times: [0, 0.16, 0.66, 1], ease: [0.215, 0.61, 0.355, 1] }}
+      />
+      <div className="absolute inset-0 bg-background/78" />
+      <div className="absolute inset-0 bg-gradient-to-r from-background via-background/86 to-background/48" />
+      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-card to-transparent" />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 py-28 lg:py-36">
         <div className="grid lg:grid-cols-[1.08fr_0.92fr] gap-12 lg:gap-16 items-center">
@@ -97,9 +150,28 @@ export function HeroSection() {
           </div>
 
           <FadeIn delay={0.35} direction="left">
-            <div className="relative">
+            <div className="relative space-y-5">
               <div className="absolute -inset-6 bg-[#75B974]/10 blur-3xl" />
-              <div className="relative glass-card rounded-2xl p-7 sm:p-8">
+              <div className="relative overflow-hidden rounded-2xl border border-border/50 bg-black shadow-2xl">
+                <video
+                  ref={openingVideoRef}
+                  className="aspect-[16/10] w-full object-cover"
+                  src="videos/opening.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  onLoadedMetadata={() => startOpeningVideo(openingVideoRef.current)}
+                  aria-hidden="true"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/42 via-transparent to-black/12" />
+                <div className="pointer-events-none absolute left-4 top-4 rounded-full border border-white/16 bg-black/18 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-white/74 backdrop-blur-md">
+                  Opening Reel
+                </div>
+              </div>
+
+              <div className="relative glass-card rounded-2xl p-6 sm:p-7">
                 <div className="flex items-center justify-between gap-4 pb-6 border-b border-border/40">
                   <div>
                     <div className="text-xs text-[#75B974] uppercase tracking-wider font-semibold">Recruiter Snapshot</div>

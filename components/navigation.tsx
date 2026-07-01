@@ -15,6 +15,7 @@ const navItems = [
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isEndingVisible, setIsEndingVisible] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,14 +25,30 @@ export function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  useEffect(() => {
+    const endingSection = document.getElementById('ending-reel')
+    if (!endingSection) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsEndingVisible(entry.isIntersecting && entry.intersectionRatio > 0.28)
+      },
+      { threshold: [0, 0.28, 0.5] },
+    )
+
+    observer.observe(endingSection)
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <>
       <motion.nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled ? 'glass py-4' : 'py-6'
         }`}
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
+        initial={{ y: -100, opacity: 0 }}
+        animate={isEndingVisible ? { y: -110, opacity: 0 } : { y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.215, 0.61, 0.355, 1] }}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
@@ -59,7 +76,7 @@ export function Navigation() {
             ))}
             <motion.a
               href="#contact"
-              className="px-4 py-2 bg-[#75B974] text-[#171a14] text-sm font-medium rounded-lg"
+              className="px-4 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -119,7 +136,7 @@ export function Navigation() {
                 ))}
                 <a
                   href="#contact"
-                  className="mt-4 px-4 py-3 bg-[#75B974] text-[#171a14] text-center font-medium rounded-lg"
+                  className="mt-4 px-4 py-3 bg-primary text-primary-foreground text-center font-medium rounded-lg"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   联系我

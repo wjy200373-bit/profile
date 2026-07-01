@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import Lenis from '@studio-freight/lenis'
 import { Navigation } from '@/components/navigation'
 import { ParticleBackground, MouseGlow, ScrollProgress, GridBackground } from '@/components/background-effects'
-import { ThemeSwitcher } from '@/components/theme-switcher'
 import { HeroSection } from '@/components/sections/hero-section'
 import { AbilityMatrix } from '@/components/sections/ability-matrix'
 import { AIPractice } from '@/components/sections/ai-practice'
@@ -49,7 +48,6 @@ export default function Home() {
       <ParticleBackground />
       <MouseGlow />
       <ScrollProgress />
-      <ThemeSwitcher />
 
       {/* Navigation */}
       <Navigation />
